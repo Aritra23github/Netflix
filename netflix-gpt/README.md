@@ -2,6 +2,8 @@
 
 - create a new project
 - configure tailwind
+- Login Form
+- sign up Form
 
 # Features
 - LogIn/Signup
