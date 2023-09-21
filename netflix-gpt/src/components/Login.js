@@ -1,14 +1,27 @@
 
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import Header from './Header';
+import { validateForm } from '../utils/validate';
 import { Link } from 'react-router-dom';
 
 const Login = () => {
     const [form, setForm] = useState('signin');
+    const [errorMessage, setErrorMessage] = useState({
+        emailMsg: "",
+        passwordMsg: "",
+    });
+    const email = useRef(null);
+    const password = useRef(null);
 
     const toggleSignInForm = () => {
         if (form == 'signin') setForm('signup');
         else if (form == 'signup') setForm('signin');
+    }
+
+    const handleAuthenticantionFormSubmit = () => {
+        // Form Validation
+        let message = validateForm(email.current.value, password.current.value);
+        setErrorMessage(message);
     }
 
   return (
@@ -20,7 +33,7 @@ const Login = () => {
                 alt=""
             />
         </div>
-        <form className='w-3/12 absolute p-12 bg-black my-36 mx-auto right-0 left-0 text-white rounded-lg bg-opacity-80'>
+        <form onSubmit={(e) => e.preventDefault()} className='w-3/12 absolute p-12 bg-black my-36 mx-auto right-0 left-0 text-white rounded-lg bg-opacity-80'>
             <h1 className='font-bold text-3xl py-4'>{form === 'signin' ? 'Sign In' : 'Sign Up'}</h1>
             {
                 form == 'signup' && 
@@ -34,12 +47,16 @@ const Login = () => {
                 type="text" 
                 placeholder='Email' 
                 className='p-4 my-4 w-full bg-gray-700' 
+                ref={email}
             />
+            <p className='text-red-400 font-bold py-3'>{errorMessage.emailMsg}</p>
             <input 
-                type="text" 
+                type="password" 
                 placeholder='Password' 
-                className='p-4 my-4 w-full bg-gray-700' 
+                className='p-4 my-4 w-full bg-gray-700'
+                ref={password} 
             />
+            <p className='text-red-400 font-bold py-3'>{errorMessage.passwordMsg}</p>
             {
                 form == 'signup' &&
                 <input 
@@ -51,6 +68,7 @@ const Login = () => {
             <button 
                 type="button" 
                 className='p-4 my-6 bg-red-700 w-full rounded-lg'
+                onClick={handleAuthenticantionFormSubmit}
             >
                 {form === 'signin' ? 'Sign In' : 'Sign Up'}
             </button>

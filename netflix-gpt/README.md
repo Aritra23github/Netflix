@@ -2,8 +2,10 @@
 
 - create a new project
 - configure tailwind
+- Routing
 - Login Form
 - sign up Form
+- Form validation
 
 # Features
 - LogIn/Signup
