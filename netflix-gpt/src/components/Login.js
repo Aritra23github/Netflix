@@ -3,9 +3,14 @@ import React, { useState, useRef } from 'react';
 import Header from './Header';
 import { validateForm } from '../utils/validate';
 import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import { addUser } from '../utils/userSlice';
+import { useNavigate } from 'react-router-dom';
 // import { Link } from 'react-router-dom';
 
 const Login = () => {
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
     const [form, setForm] = useState('signin');
 
     const [errorMessage, setErrorMessage] = useState({
@@ -42,14 +47,25 @@ const Login = () => {
         try {
             if (form == 'signup') {
                 const response = await axios.post('http://localhost:1235/sign-up', signUpFormFieldValue);
-                console.log(response);
+
+                const {id, firstName, email} = response?.data?.data;
+
+                dispatch(addUser({ uid: id, firstName: firstName, email: email}));
+
+                navigate("/browse");
             } else if (form == 'signin') {
                 let payload = {
                     email: signUpFormFieldValue.email,
                     password: signUpFormFieldValue.password
-                }
+                };
+
                 const response = await axios.post('http://localhost:1235/sign-in', payload);
-                console.log(response);
+                
+                const { id, email, firstName, token } = response?.data?.data;
+
+                dispatch(addUser({uid: id, email: email, firstName: firstName, token: token}));
+                
+                navigate("/browse");
             }
         } catch (error) {
             console.log(error);
