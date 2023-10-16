@@ -64,6 +64,8 @@ const Login = () => {
                 const { id, email, firstName, token } = response?.data?.data;
 
                 dispatch(addUser({uid: id, email: email, firstName: firstName, token: token}));
+
+                localStorage.setItem('token', token);
                 
                 navigate("/browse");
             }

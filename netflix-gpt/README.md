@@ -6,6 +6,8 @@
 - Login Form
 - sign up Form
 - Form validation
+User1@gmail.com
+User@1234
 
 # Features
 - LogIn/Signup
