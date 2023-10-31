@@ -4,3 +4,5 @@ export const USER_AVATAR = "https://static-00.iconduck.com/assets.00/user-icon-2
 
 
 export const API_URL = 'http://localhost:1235/';
+
+export const TMDB_IMG_CDN = 'https://image.tmdb.org/t/p/w500';
