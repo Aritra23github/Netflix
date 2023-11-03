@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { removeUser } from '../utils/userSlice';
 import { LOGO_URL, USER_AVATAR } from '../utils/constants';
 import { toggleGptSearch } from '../utils/gptSlice';
+import { SUPPORTED_LANGUAGES } from '../utils/constants';
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -48,6 +49,11 @@ const Header = () => {
           >
             GPT Search
           </button>
+          <select className='p-2 m-2 bg-gray-900 text-white'>
+            {
+              SUPPORTED_LANGUAGES.map((lang) => <option key={lang.key} value={lang.key}>{lang.value}</option>)
+            }
+          </select>
           <img
             className="hidden md:block w-12 h-12"
             alt="usericon"
