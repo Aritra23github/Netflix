@@ -6,11 +6,13 @@ import { removeUser } from '../utils/userSlice';
 import { LOGO_URL, USER_AVATAR } from '../utils/constants';
 import { toggleGptSearch } from '../utils/gptSlice';
 import { SUPPORTED_LANGUAGES } from '../utils/constants';
+import { changeLanguage } from '../utils/configSlice';
 
 const Header = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const userDetails = useSelector((store) => store.user);
+  const showGptSearch = useSelector((store) => store.gpt?.showGptSearch);
   const token = localStorage.getItem('token');
 
   const checkIfUserIsLoggedIn = () => {
@@ -32,6 +34,10 @@ const Header = () => {
     dispatch(toggleGptSearch()); 
   }
 
+  const handleLanguageChange = (event) => {
+    dispatch(changeLanguage(event.target.value));
+  }
+
   return (
     <div className='absolute w-screen px-8 py-2 bg-gradient-to-b from-black z-10 flex justify-between'>
       <img 
@@ -47,13 +53,13 @@ const Header = () => {
             type="button"
             onClick={handleGptSearch}
           >
-            GPT Search
+            {showGptSearch ? "Home Page" : "GPT Search"}
           </button>
-          <select className='p-2 m-2 bg-gray-900 text-white'>
+          {showGptSearch && <select className='p-2 m-2 bg-gray-900 text-white' onChange={handleLanguageChange}>
             {
               SUPPORTED_LANGUAGES.map((lang) => <option key={lang.key} value={lang.key}>{lang.value}</option>)
             }
-          </select>
+          </select>}
           <img
             className="hidden md:block w-12 h-12"
             alt="usericon"
