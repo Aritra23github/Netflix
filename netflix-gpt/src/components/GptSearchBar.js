@@ -1,11 +1,13 @@
 import React, { useRef } from 'react';
 import { languageSettings } from '../utils/languageConstant';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
+import { addGptMovies } from '../utils/gptSlice';
 
 const GptSearchBar = () => {
   const searchText = useRef("");
   const language = useSelector((store) => store.config?.lang);
+  const dispatch = useDispatch();
 
   const getMovieList = async (movie) => {
     try {
@@ -30,15 +32,15 @@ const GptSearchBar = () => {
         'search': query
       });
 
-      console.log(response);
       const movies = response.data?.data[0]?.message?.content.split(',');
-      console.log(movies);
+      
       const tmdbMovieList = movies.map((movie) => 
         getMovieList(movie)
       );
-      console.log(tmdbMovieList);
+      
       const tmdbMovieListResponse = await Promise.all(tmdbMovieList);
-      console.log('t:', tmdbMovieListResponse);
+      
+      dispatch(addGptMovies({movieNames: movies, movieResults: tmdbMovieListResponse}));
     } catch (error) {
       console.log(error);
     }
